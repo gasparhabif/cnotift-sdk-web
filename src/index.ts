@@ -6,7 +6,6 @@ import { CNotifyTopicStorage } from './storage';
 export default class CNotifySDK {
   private static instance: CNotifySDK;
 
-  private firebaseFilePath: string = '';
   private subscribedToTopics: boolean = false;
   private testingMode: boolean = false;
   private topicGenerator: CNotifyTopicGenerator;
@@ -15,21 +14,26 @@ export default class CNotifySDK {
 
   private firebaseApp?: FirebaseApp;
 
-  private constructor(options: {
-    firebaseApp?: FirebaseApp;
-    firebaseConfig?: FirebaseOptions;
-    file?: string;
-    testing?: boolean;
-    appVersion?: string;
-  }) {
-    this.firebaseFilePath = options.file || '';
+  private constructor(
+    options: {
+      firebaseApp?: FirebaseApp;
+      firebaseConfig?: FirebaseOptions;
+      file?: string;
+      testing?: boolean;
+      appVersion?: string;
+    } = {}
+  ) {
     this.testingMode = options.testing || false;
     this.appVersion = options.appVersion;
     this.topicGenerator = new CNotifyTopicGenerator();
     this.topicStorage = new CNotifyTopicStorage();
 
     this.printCNotifySDK(`🚀 Initializing (Version: 1.0.0)`);
-    this.initializeFirebase(options.firebaseApp, options.firebaseConfig);
+    this.initializeFirebase(
+      options.firebaseApp,
+      options.firebaseConfig,
+      options.file
+    );
   }
 
   public static getInstance(options: {
@@ -47,7 +51,8 @@ export default class CNotifySDK {
 
   private initializeFirebase(
     firebaseApp?: FirebaseApp,
-    firebaseConfig?: FirebaseOptions
+    firebaseConfig?: FirebaseOptions,
+    file?: string
   ): void {
     this.printCNotifySDK('⚙️ Initializing Firebase');
 
@@ -62,6 +67,8 @@ export default class CNotifySDK {
         this.printCNotifySDK(`Error initializing Firebase app: ${error}`);
         throw error;
       }
+    } else if (file) {
+      throw new Error('File initialization not implemented');
     } else {
       throw new Error('Either firebaseApp or firebaseConfig must be provided');
     }
@@ -147,6 +154,7 @@ export default class CNotifySDK {
     this.printCNotifySDK(`🟢 Subscribing to topic: ${topic}`);
 
     const token = await getToken(getMessaging(this.firebaseApp));
+    // TODO: Send token to server for subscription
   }
 
   private unsubscribeFromTopic(topic: string): void {
