@@ -1,9 +1,9 @@
 {
-  "name": "cnotify-sdk",
-  "description": "A simple SDK for CNotify",
-  "version": "1.0.0",
+  "name": "@eruka-tech/cnotify-sdk",
+  "description": "Calendarize your push notifications in a few clicks",
+  "version": "1.0.1",
   "keywords": [],
-  "author": "",
+  "author": "eruka-tech",
   "license": "ISC",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
