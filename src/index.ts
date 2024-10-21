@@ -7,6 +7,7 @@ import {
   MetadataStorage,
   MetadataComparison,
 } from './utils';
+import { PermissionResult } from './constants/permission.constants';
 
 export interface CNotifySDKCredentials {
   apiKey: string;
@@ -85,19 +86,24 @@ export default class CNotifySDK {
     this.requestPermissions();
   }
 
-  private requestPermissions(): void {
+  public requestPermissions(): Promise<PermissionResult> {
     this.printCNotifySDK('Checking notification permissions');
     // Note: Web notification permissions are handled differently
     // You'll need to use the Notification API here
     if ('Notification' in window) {
-      Notification.requestPermission().then((permission) => {
+      return Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           this.printCNotifySDK('😁 Notification permissions granted');
           this.attemptTopicSubscription();
+          return PermissionResult.GRANTED;
         } else {
           this.printCNotifySDK('🚨 Notification permissions denied');
+          return PermissionResult.DENIED;
         }
       });
+    } else {
+      this.printCNotifySDK('🚨 Notification API not available');
+      return Promise.resolve(PermissionResult.DENIED);
     }
   }
 

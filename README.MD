@@ -1,9 +1,11 @@
 # CNotifySDK (web_cnotify_sdk) 🔔
 
+[Download from NPM](https://www.npmjs.com/package/@eruka-tech/cnotify-sdk)
+
 1. Install the SDK
 
 ```bash
-$ todo
+$ npm i @eruka-tech/cnotify-sdk
 ```
 
 2. Import the SDK
