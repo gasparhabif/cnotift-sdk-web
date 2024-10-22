@@ -9,5 +9,6 @@ $ npm link path/to/this/repo
 To deploy a new version
 
 1. Update version code in `package.json`
-2. Run `npm run build`
-3. Run `npm publish --access public`
+1. Update version code in `index.ts`
+1. Run `npm run build`
+1. Run `npm publish --access public`
