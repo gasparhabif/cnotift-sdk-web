@@ -1,7 +1,7 @@
 {
   "name": "@eruka-tech/cnotify-sdk",
   "description": "Calendarize your push notifications in a few clicks",
-  "version": "1.0.4",
+  "version": "1.0.9",
   "keywords": [
     "push-notification",
     "firebase",
@@ -30,6 +30,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@firebase/messaging": "^0.12.13",
     "axios": "^1.7.7",
     "firebase": "^10.14.1"
   }

@@ -40,7 +40,7 @@ export default class CNotifySDK {
     this.appVersion = options.appVersion;
     this.metadataStorage = new MetadataStorage();
 
-    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.0)`);
+    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.9)`);
     this.initializeFirebase(
       options.firebaseApp,
       options.firebaseConfig,
@@ -170,7 +170,7 @@ export default class CNotifySDK {
     internalMetadata: IInternalMetadata
   ): Promise<boolean> {
     this.printCNotifySDK(`🟢 Subscribing to topics...`);
-    const token = await getToken(getMessaging(this.firebaseApp));
+    const token = await this.getRegistrationToken();
 
     const { status } = await AudienceController.subscribe(
       {
@@ -187,7 +187,7 @@ export default class CNotifySDK {
   private async remoteUnsubscribeTopics(): Promise<boolean> {
     this.printCNotifySDK(`🟡 Unsubscribing topics...`);
 
-    const token = await getToken(getMessaging(this.firebaseApp));
+    const token = await this.getRegistrationToken();
     const { status } = await AudienceController.unsubscribe(
       {
         firebaseRegistrationToken: token,
@@ -200,5 +200,18 @@ export default class CNotifySDK {
 
   private printCNotifySDK(message: string): void {
     console.log(`[CNotifySDK] ${message}`);
+  }
+
+  private async getRegistrationToken(): Promise<string> {
+    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+      const swRegistration = await navigator.serviceWorker.register(
+        '/firebase-messaging-sw.js'
+      );
+      return getToken(getMessaging(this.firebaseApp), {
+        serviceWorkerRegistration: swRegistration,
+      });
+    }
+
+    return getToken(getMessaging(this.firebaseApp));
   }
 }

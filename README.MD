@@ -67,6 +67,41 @@ cnotify.requestPermissions().then((permission) => {
 });
 ```
 
+5. It is necessary to create a `firebase-messaging-sw.js` file in `/public` (or wherever appropriate), the purpose is to make the `/firebase-messaging-sw.js` url available. The content of the file is as follows:
+
+```javascript
+// Scripts for firebase and firebase messaging
+importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
+
+// Initialize the Firebase app in the service worker by passing the generated config
+const firebaseConfig = {
+  apiKey: '<your_api_key>',
+  authDomain: '<your_auth_domain>',
+  projectId: '<your_project_id>',
+  storageBucket: '<your_storage_bucket>',
+  messagingSenderId: '<your_messaging_sender_id>',
+  appId: '<your_app_id>',
+  measurementId: '<your_measurement_id>',
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// Retrieve firebase messaging
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage(function (payload) {
+  console.log('Received background message ', payload);
+
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+```
+
 ## Examples
 
 - [Next.JS example](https://github.com/tlofano/cnotify_nextjs_example)
