@@ -1,6 +1,10 @@
 # CNotifySDK (web_cnotify_sdk) 🔔
 
-[Download from NPM](https://www.npmjs.com/package/@eruka-tech/cnotify-sdk)
+- [Home](https://cnotify.me)
+- [Platform](https://app.cnotify.me)
+- [Docs](https://docs.cnotify.me)
+
+## Get started
 
 1. Install the SDK
 
@@ -11,7 +15,7 @@ $ npm i @eruka-tech/cnotify-sdk
 2. Import the SDK
 
 ```javascript
-import CNotifySDK from 'cnotify-sdk';
+import CNotifySDK from '@eruka-tech/cnotify-sdk';
 ```
 
 3. Initialize the SDK
@@ -31,7 +35,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize CNotifySDK from configs
-CNotifySDK.getInstance(
+const cnotify = CNotifySDK.getInstance(
   { apiKey: '<cnotify_api_key>' },
   {
     testing: true,
@@ -40,7 +44,7 @@ CNotifySDK.getInstance(
 );
 
 // Or initialize CNotifySDK from an existing Firebase App
-// CNotifySDK.getInstance(
+// CNotifyconst cnotify = SDK.getInstance(
 //   { apiKey: '<cnotify_api_key>' },
 //   {
 // testing: true,
@@ -48,3 +52,21 @@ CNotifySDK.getInstance(
 //   }
 // );
 ```
+
+4. Request notification permissions
+
+Permissions will be requested automatically when initializing the SDK, but there are some browsers that require permissions to be requested after a user gesture on the screen. To request notification permissions on demand, the SDK provides the following method:
+
+```javascript
+cnotify.requestPermissions().then((permission) => {
+  if (permission === 'granted') {
+    console.log('Notification permission granted ✅');
+  } else {
+    console.log('Notification permission denied ❌');
+  }
+});
+```
+
+## Examples
+
+- [Next.JS example](https://github.com/tlofano/cnotify_nextjs_example)

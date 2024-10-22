@@ -1,8 +1,16 @@
 {
   "name": "@eruka-tech/cnotify-sdk",
   "description": "Calendarize your push notifications in a few clicks",
-  "version": "1.0.1",
-  "keywords": [],
+  "version": "1.0.4",
+  "keywords": [
+    "push-notification",
+    "firebase",
+    "calendarize",
+    "notification",
+    "recurring",
+    "free",
+    "schedule"
+  ],
   "author": "eruka-tech",
   "license": "ISC",
   "main": "dist/index.js",
