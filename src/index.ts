@@ -90,7 +90,7 @@ export default class CNotifySDK {
     this.printCNotifySDK('Checking notification permissions');
     // Note: Web notification permissions are handled differently
     // You'll need to use the Notification API here
-    if ('Notification' in window) {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
       return Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           this.printCNotifySDK('😁 Notification permissions granted');
