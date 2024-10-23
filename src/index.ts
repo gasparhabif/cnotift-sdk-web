@@ -41,7 +41,7 @@ export default class CNotifySDK {
     this.appVersion = options.appVersion;
     this.metadataStorage = new MetadataStorage();
 
-    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.13)`);
+    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.14)`);
     this.initializeFirebase(
       options.firebaseApp,
       options.firebaseConfig,

@@ -31,9 +31,6 @@ const firebaseConfig = {
   measurementId: '<your_measurement_id>',
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
 // Initialize CNotifySDK from configs
 const cnotify = CNotifySDK.getInstance(
   { apiKey: '<cnotify_api_key>' },
@@ -44,6 +41,7 @@ const cnotify = CNotifySDK.getInstance(
 );
 
 // Or initialize CNotifySDK from an existing Firebase App
+// const app = initializeApp(firebaseConfig);
 // CNotifyconst cnotify = SDK.getInstance(
 //   { apiKey: '<cnotify_api_key>' },
 //   {
@@ -92,13 +90,6 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
   console.log('Received background message ', payload);
-
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
 });
 ```
 
