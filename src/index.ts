@@ -1,5 +1,5 @@
 import { FirebaseApp, initializeApp, FirebaseOptions } from 'firebase/app';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { AudienceController } from './controllers';
 import {
   MetadataGenerator,
@@ -41,7 +41,7 @@ export default class CNotifySDK {
     this.appVersion = options.appVersion;
     this.metadataStorage = new MetadataStorage();
 
-    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.11)`);
+    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.13)`);
     this.initializeFirebase(
       options.firebaseApp,
       options.firebaseConfig,
@@ -213,6 +213,7 @@ export default class CNotifySDK {
         const swRegistration = await navigator.serviceWorker.register(
           '/firebase-messaging-sw.js'
         );
+        this.setOnMessageHandler();
         return getToken(getMessaging(this.firebaseApp), {
           serviceWorkerRegistration: swRegistration,
         });
@@ -220,10 +221,18 @@ export default class CNotifySDK {
         this.printCNotifySDK(
           '/firebase-messaging-sw.js not found, trying to get token without manual service worker registration'
         );
+        this.setOnMessageHandler();
         return getToken(getMessaging(this.firebaseApp));
       }
     }
 
     return getToken(getMessaging(this.firebaseApp));
+  }
+
+  private setOnMessageHandler(): void {
+    onMessage(getMessaging(this.firebaseApp), (payload) => {
+      console.log('Message received. ', payload);
+      this.printCNotifySDK(`Message received: ${JSON.stringify(payload)}`);
+    });
   }
 }
