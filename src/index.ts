@@ -19,6 +19,7 @@ export interface CNotifySDKOptions {
   file?: string;
   testing?: boolean;
   appVersion?: string;
+  requestPermissions?: boolean;
 }
 
 export default class CNotifySDK {
@@ -40,11 +41,12 @@ export default class CNotifySDK {
     this.appVersion = options.appVersion;
     this.metadataStorage = new MetadataStorage();
 
-    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.10)`);
+    this.printCNotifySDK(`🚀 Initializing (Version: 1.0.11)`);
     this.initializeFirebase(
       options.firebaseApp,
       options.firebaseConfig,
-      options.file
+      options.file,
+      options.requestPermissions
     );
   }
 
@@ -61,7 +63,8 @@ export default class CNotifySDK {
   private initializeFirebase(
     firebaseApp?: FirebaseApp,
     firebaseConfig?: FirebaseOptions,
-    file?: string
+    file?: string,
+    requestPermissions: boolean = true
   ): void {
     this.printCNotifySDK('⚙️ Initializing Firebase');
 
@@ -83,7 +86,9 @@ export default class CNotifySDK {
       throw new Error('Either firebaseApp or firebaseConfig must be provided');
     }
 
-    this.requestPermissions();
+    if (requestPermissions) {
+      this.requestPermissions();
+    }
   }
 
   public requestPermissions(): Promise<PermissionResult> {
@@ -204,12 +209,19 @@ export default class CNotifySDK {
 
   private async getRegistrationToken(): Promise<string> {
     if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
-      const swRegistration = await navigator.serviceWorker.register(
-        '/firebase-messaging-sw.js'
-      );
-      return getToken(getMessaging(this.firebaseApp), {
-        serviceWorkerRegistration: swRegistration,
-      });
+      try {
+        const swRegistration = await navigator.serviceWorker.register(
+          '/firebase-messaging-sw.js'
+        );
+        return getToken(getMessaging(this.firebaseApp), {
+          serviceWorkerRegistration: swRegistration,
+        });
+      } catch (error) {
+        this.printCNotifySDK(
+          '/firebase-messaging-sw.js not found, trying to get token without manual service worker registration'
+        );
+        return getToken(getMessaging(this.firebaseApp));
+      }
     }
 
     return getToken(getMessaging(this.firebaseApp));
