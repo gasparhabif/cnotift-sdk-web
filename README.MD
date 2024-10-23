@@ -6,19 +6,19 @@
 
 ## Get started
 
-1. Install the SDK
+1. **Install the SDK**
 
 ```bash
 $ npm i @eruka-tech/cnotify-sdk
 ```
 
-2. Import the SDK
+2. **Import the SDK**
 
 ```javascript
 import CNotifySDK from '@eruka-tech/cnotify-sdk';
 ```
 
-3. Initialize the SDK
+3. **Initialize the SDK**
 
 ```javascript
 const firebaseConfig = {
@@ -53,7 +53,7 @@ const cnotify = CNotifySDK.getInstance(
 // );
 ```
 
-4. Request notification permissions
+4. **Request notification permissions**
 
 Permissions will be requested automatically when initializing the SDK, but there are some browsers that require permissions to be requested after a user gesture on the screen. To request notification permissions on demand, the SDK provides the following method:
 
@@ -67,7 +67,7 @@ cnotify.requestPermissions().then((permission) => {
 });
 ```
 
-5. It is necessary to create a `firebase-messaging-sw.js` file in `/public` (or wherever appropriate), the purpose is to make the `/firebase-messaging-sw.js` url available. The content of the file is as follows:
+5. **It is necessary to create a `firebase-messaging-sw.js` file in `/public` (or wherever appropriate), the purpose is to make the `/firebase-messaging-sw.js` url available. The content of the file is as follows:**
 
 ```javascript
 // Scripts for firebase and firebase messaging
